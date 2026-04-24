@@ -1,0 +1,28 @@
+{
+  "name": "web-architect-agent",
+  "version": "2.0.0",
+  "description": "MCP server — Web Architect 2026: design systems, MUI ecosystem, web best practices",
+  "main": "agent.js",
+  "type": "module",
+  "scripts": {
+    "start": "node agent.js",
+    "dev": "node --watch agent.js"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "web-architect",
+    "design-systems",
+    "mui",
+    "nextjs",
+    "tailwindcss"
+  ],
+  "author": "Web Architect Agent 2026",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}
