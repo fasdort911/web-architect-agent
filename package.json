@@ -1,6 +1,6 @@
 {
   "name": "web-architect-agent",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "MCP server — Web Architect 2026: design systems, MUI ecosystem, web best practices",
   "main": "agent.js",
   "type": "module",

@@ -8,16 +8,27 @@ No external APIs — all knowledge is built-in. Works in **any language**: ask i
 
 ## What's inside
 
-6 tools available to any MCP-compatible client:
+8 tools available to any MCP-compatible client:
 
 | Tool | Description |
 |------|-------------|
-| `selection_matrix` | Pick the right design system for your project type |
-| `mui_package` | MUI ecosystem: install commands, components, theme setup |
-| `design_system_info` | Deep dive into any specific design system |
+| `get_selection_matrix` | Pick the right design system for your project type |
+| `get_mui_package` | MUI ecosystem: install commands, components, theme setup |
+| `get_design_system_info` | Deep dive into any specific design system |
 | `list_design_systems` | Browse 200+ systems from awesome-design-systems catalog |
-| `prompts` | Ready-to-use prompts for landing pages, dashboards, audits |
-| `principles` | Core web architecture principles: performance, a11y, CRO, security |
+| `get_prompts` | Ready-to-use prompts for landing pages, dashboards, audits |
+| `get_agent_principles` | Core web architecture principles: performance, a11y, CRO, security |
+| `fetch_docs` | Fetch live documentation from any URL — gets latest API docs, changelogs, component references |
+| `scaffold` | Generate complete project scaffold with all files and code ready to use |
+
+### Scaffolds included
+
+| Type | Description |
+|------|-------------|
+| `nextjs-landing` | Next.js 15 + Tailwind v4 + shadcn/ui — Hero, Features, Pricing, ContactForm, Footer, JSON-LD, security headers |
+| `nextjs-dashboard` | Next.js 15 + MUI + Data Grid + Charts — stats cards, table, revenue chart |
+| `nextjs-saas` | SaaS starter — auth shell, protected routes, API routes, Zod validation, middleware |
+| `nextjs-blog` | Blog with dynamic routes, MDX-ready, sitemap.xml, RSS feed |
 
 ---
 
