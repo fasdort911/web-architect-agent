@@ -1,0 +1,22 @@
+export const DESIGN_SYSTEMS_CATALOG = [
+  { name: "IBM Carbon",           url: "carbondesignsystem.com",        domain: "enterprise",  install: "npm install @carbon/react" },
+  { name: "Atlassian",            url: "atlassian.design",              domain: "enterprise",  install: "npm install @atlaskit/button" },
+  { name: "AWS Cloudscape",       url: "cloudscape.design",            domain: "cloud",       install: "npm install @cloudscape-design/components" },
+  { name: "Shopify Polaris",      url: "polaris.shopify.com",          domain: "e-commerce",  install: "npm install @shopify/polaris" },
+  { name: "GitHub Primer",        url: "primer.style",                 domain: "dev-tools",   install: "npm install @primer/react" },
+  { name: "GitLab Pajamas",       url: "design.gitlab.com",           domain: "dev-tools",   install: "npm install @gitlab/ui" },
+  { name: "Microsoft Fluent UI",  url: "fluentui.dev",                 domain: "enterprise",  install: "npm install @fluentui/react-components" },
+  { name: "Adobe Spectrum",       url: "spectrum.adobe.com",           domain: "creative",    install: "npm install @adobe/react-spectrum" },
+  { name: "Salesforce Lightning", url: "lightningdesignsystem.com",   domain: "crm",         install: "npm install @salesforce-ux/design-system" },
+  { name: "Twilio Paste",         url: "paste.twilio.com",             domain: "telecom",     install: "npm install @twilio-paste/core" },
+  { name: "Pinterest Gestalt",    url: "gestalt.pinterest.systems",    domain: "social",      install: "npm install gestalt" },
+  { name: "GOV.UK Design System", url: "gov.uk/design-system",        domain: "government",  install: "npm install govuk-frontend" },
+  { name: "Mantine",              url: "mantine.dev",                  domain: "components",  install: "npm install @mantine/core @mantine/hooks" },
+  { name: "Chakra UI",            url: "chakra-ui.com",                domain: "components",  install: "npm install @chakra-ui/react" },
+  { name: "Elastic EUI",          url: "elastic.github.io/eui",       domain: "search/data", install: "npm install @elastic/eui" },
+  { name: "Radix UI",             url: "radix-ui.com",                 domain: "headless",    install: "npm install @radix-ui/react-dialog" },
+  { name: "shadcn/ui",            url: "ui.shadcn.com",                domain: "headless",    install: "npx shadcn@latest init" },
+  { name: "Intuit Harmony",       url: "designsystem.quickbooks.com", domain: "finance",     install: "—" },
+  { name: "Morningstar DS",       url: "designsystem.morningstar.com",domain: "finance",     install: "—" },
+  { name: "NASA WDS",             url: "nasa.github.io/nasawds-site", domain: "government",  install: "npm install nasawds" }
+];
