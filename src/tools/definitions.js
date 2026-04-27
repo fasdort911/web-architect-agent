@@ -90,15 +90,46 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'scaffold',
-    description: 'Generate a complete project scaffold with all files and code. Returns full content ready to create.',
+    description: 'Generate a complete project scaffold with all files and code ready to create.',
     inputSchema: {
       type: 'object',
       properties: {
         type: {
           type: 'string',
-          description: 'Scaffold type: nextjs-landing, nextjs-dashboard, nextjs-saas, nextjs-blog. Returns available types if omitted.'
+          description: 'Scaffold type: nextjs-landing, nextjs-dashboard, nextjs-saas, nextjs-blog, nextjs-ecommerce, nextjs-i18n. Returns available types if omitted.'
         }
       }
+    }
+  },
+  {
+    name: 'get_checklist',
+    description: 'Actionable checklist with how-to for each item. Types: performance, a11y, seo, security, cro, launch.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        type: {
+          type: 'string',
+          description: 'Checklist type: performance, a11y, seo, security, cro, launch. Returns all types if omitted.'
+        }
+      }
+    }
+  },
+  {
+    name: 'search_npm',
+    description: 'Search npm registry for packages. Returns name, version, description, weekly downloads, homepage.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Search query, e.g. "react table", "date picker", "form validation"'
+        },
+        limit: {
+          type: 'number',
+          description: 'Max results (default 5, max 20)'
+        }
+      },
+      required: ['query']
     }
   }
 ];

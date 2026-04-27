@@ -8,7 +8,7 @@ No external APIs — all knowledge is built-in. Works in **any language**: ask i
 
 ## What's inside
 
-8 tools available to any MCP-compatible client:
+10 tools available to any MCP-compatible client:
 
 | Tool | Description |
 |------|-------------|
@@ -20,6 +20,8 @@ No external APIs — all knowledge is built-in. Works in **any language**: ask i
 | `get_agent_principles` | Core web architecture principles: performance, a11y, CRO, security |
 | `fetch_docs` | Fetch live documentation from any URL — gets latest API docs, changelogs, component references |
 | `scaffold` | Generate complete project scaffold with all files and code ready to use |
+| `get_checklist` | Actionable checklist with how-to for each item: performance, a11y, SEO, security, CRO, launch |
+| `search_npm` | Search npm registry — returns package name, version, weekly downloads, install command |
 
 ### Scaffolds included
 
@@ -29,6 +31,8 @@ No external APIs — all knowledge is built-in. Works in **any language**: ask i
 | `nextjs-dashboard` | Next.js 15 + MUI + Data Grid + Charts — stats cards, table, revenue chart |
 | `nextjs-saas` | SaaS starter — auth shell, protected routes, API routes, Zod validation, middleware |
 | `nextjs-blog` | Blog with dynamic routes, MDX-ready, sitemap.xml, RSS feed |
+| `nextjs-ecommerce` | E-commerce — product catalog, cart (Zustand + persist), checkout, Zod validation |
+| `nextjs-i18n` | Multi-language — next-intl, locale routing, hreflang, locale switcher, typed translations |
 
 ---
 

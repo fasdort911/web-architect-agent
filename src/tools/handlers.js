@@ -4,21 +4,24 @@ import { DESIGN_SYSTEMS_CATALOG } from '../data/catalog.js';
 import { PROMPTS } from '../data/prompts.js';
 import { PRINCIPLES } from '../data/principles.js';
 import { SCAFFOLDS } from '../data/scaffolds/index.js';
+import { CHECKLISTS } from '../data/checklists.js';
 
-const ok = (text) => ({ content: [{ type: 'text', text }] });
+const ok  = (text) => ({ content: [{ type: 'text', text }] });
 const err = (text) => ({ content: [{ type: 'text', text }], isError: true });
 
 export async function handleTool(name, args) {
   switch (name) {
-    case 'get_selection_matrix':     return handleSelectionMatrix(args);
-    case 'get_mui_package':          return handleMuiPackage(args);
-    case 'get_design_system_info':   return handleDesignSystemInfo(args);
-    case 'list_design_systems':      return handleListDesignSystems(args);
-    case 'get_prompts':              return handlePrompts(args);
-    case 'get_agent_principles':     return ok(PRINCIPLES);
-    case 'fetch_docs':               return handleFetchDocs(args);
-    case 'scaffold':                 return handleScaffold(args);
-    default:                         return err(`Tool "${name}" not found.`);
+    case 'get_selection_matrix':   return handleSelectionMatrix(args);
+    case 'get_mui_package':        return handleMuiPackage(args);
+    case 'get_design_system_info': return handleDesignSystemInfo(args);
+    case 'list_design_systems':    return handleListDesignSystems(args);
+    case 'get_prompts':            return handlePrompts(args);
+    case 'get_agent_principles':   return ok(PRINCIPLES);
+    case 'fetch_docs':             return handleFetchDocs(args);
+    case 'scaffold':               return handleScaffold(args);
+    case 'get_checklist':          return handleChecklist(args);
+    case 'search_npm':             return handleSearchNpm(args);
+    default:                       return err(`Tool "${name}" not found.`);
   }
 }
 
@@ -35,7 +38,6 @@ function handleSelectionMatrix(args) {
     const r = SELECTION_MATRIX[key];
     return ok(`**${key}**\n\nStack: ${r.stack}\nInstall: \`${r.install}\`\nNote: ${r.note}`);
   }
-
   const text = Object.entries(SELECTION_MATRIX)
     .map(([type, r]) => `**${type}**\n  Stack: ${r.stack}\n  Install: \`${r.install}\`\n  ${r.note}`)
     .join('\n\n');
@@ -69,10 +71,7 @@ function handleDesignSystemInfo(args) {
   let results = DESIGN_SYSTEMS_CATALOG;
   if (name)   results = results.filter((ds) => ds.name.toLowerCase().includes(name.toLowerCase()));
   if (domain) results = results.filter((ds) => ds.domain.toLowerCase().includes(domain.toLowerCase()));
-
-  if (!results.length) {
-    return ok('Nothing found. Use list_design_systems to browse the full catalog.');
-  }
+  if (!results.length) return ok('Nothing found. Use list_design_systems to browse the full catalog.');
   const text = results
     .map((ds) => `**${ds.name}** (${ds.domain})\n  Docs: ${ds.url}\n  Install: \`${ds.install}\``)
     .join('\n\n');
@@ -83,7 +82,6 @@ function handleListDesignSystems(args) {
   const domain = args?.domain;
   let results = DESIGN_SYSTEMS_CATALOG;
   if (domain) results = results.filter((ds) => ds.domain.toLowerCase().includes(domain.toLowerCase()));
-
   const text = results
     .map((ds) => `- **${ds.name}** (${ds.domain}) — ${ds.url} | \`${ds.install}\``)
     .join('\n');
@@ -107,22 +105,18 @@ function handlePrompts(args) {
 
 async function handleFetchDocs(args) {
   const url = args?.url;
-  if (!url || !url.startsWith('http')) {
-    return err('Invalid URL. Must start with http:// or https://');
-  }
+  if (!url || !url.startsWith('http')) return err('Invalid URL. Must start with http:// or https://');
   try {
     const response = await fetch(url, {
       headers: { 'User-Agent': 'web-architect-mcp/3.0 (documentation fetcher)' },
       signal: AbortSignal.timeout(10000),
     });
-    if (!response.ok) {
-      return err(`HTTP ${response.status}: ${response.statusText}`);
-    }
+    if (!response.ok) return err(`HTTP ${response.status}: ${response.statusText}`);
 
     const contentType = response.headers.get('content-type') ?? '';
     const raw = await response.text();
-
     let text = raw;
+
     if (contentType.includes('text/html')) {
       text = raw
         .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -131,19 +125,13 @@ async function handleFetchDocs(args) {
         .replace(/<footer[\s\S]*?<\/footer>/gi, '')
         .replace(/<header[\s\S]*?<\/header>/gi, '')
         .replace(/<[^>]+>/g, ' ')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&amp;/g, '&')
-        .replace(/&quot;/g, '"')
+        .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
         .replace(/\s{3,}/g, '\n\n')
         .trim();
     }
 
-    const truncated = text.length > 8000
-      ? text.slice(0, 8000) + '\n\n[... truncated]'
-      : text;
-
+    const truncated = text.length > 8000 ? text.slice(0, 8000) + '\n\n[... truncated]' : text;
     return ok(`# ${url}\n\n${truncated}`);
   } catch (e) {
     return err(`Fetch failed: ${e instanceof Error ? e.message : String(e)}`);
@@ -158,16 +146,64 @@ function handleScaffold(args) {
       .join('\n');
     return ok(`# Available Scaffolds\n\n${list}\n\nSpecify type to get files.`);
   }
-
   const scaffold = SCAFFOLDS[type];
   if (!scaffold) {
     return ok(`Scaffold "${type}" not found.\nAvailable: ${Object.keys(SCAFFOLDS).join(', ')}`);
   }
-
   const fileList = Object.keys(scaffold.files).map((f) => `  ${f}`).join('\n');
   const files = Object.entries(scaffold.files)
     .map(([filePath, content]) => `## ${filePath}\n\`\`\`\n${content}\n\`\`\``)
     .join('\n\n');
-
   return ok(`# Scaffold: ${type}\n${scaffold.description}\n\n## Files\n${fileList}\n\n---\n\n${files}`);
+}
+
+function handleChecklist(args) {
+  const type = args?.type?.toLowerCase();
+  if (!type) {
+    const list = Object.entries(CHECKLISTS)
+      .map(([key, c]) => `- **${key}**: ${c.title} (${c.items.length} items)`)
+      .join('\n');
+    return ok(`# Available Checklists\n\n${list}\n\nSpecify type to get the full checklist.`);
+  }
+  const checklist = CHECKLISTS[type];
+  if (!checklist) {
+    return ok(`Checklist "${type}" not found.\nAvailable: ${Object.keys(CHECKLISTS).join(', ')}`);
+  }
+  const items = checklist.items
+    .map((item, i) => `### ${i + 1}. ${item.check}\n${item.how}`)
+    .join('\n\n');
+  return ok(`# ${checklist.title}\n\n${items}`);
+}
+
+async function handleSearchNpm(args) {
+  const query = args?.query;
+  if (!query) return err('query is required');
+  const limit = Math.min(args?.limit ?? 5, 20);
+
+  try {
+    const url = `https://registry.npmjs.org/-/v1/search?text=${encodeURIComponent(query)}&size=${limit}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return err(`npm registry error: ${res.status}`);
+
+    const data = await res.json();
+    if (!data.objects?.length) return ok(`No packages found for "${query}"`);
+
+    const results = data.objects.map((obj) => {
+      const p = obj.package;
+      const downloads = obj.downloads?.weekly
+        ? `${(obj.downloads.weekly / 1000).toFixed(0)}k/week`
+        : '';
+      const score = Math.round((obj.score?.final ?? 0) * 100);
+      return [
+        `**${p.name}** v${p.version} ${downloads ? `· ${downloads}` : ''} · score ${score}%`,
+        p.description ?? '',
+        p.links?.homepage ? `Homepage: ${p.links.homepage}` : '',
+        `Install: \`npm install ${p.name}\``,
+      ].filter(Boolean).join('\n');
+    }).join('\n\n');
+
+    return ok(`# npm search: "${query}"\n\n${results}`);
+  } catch (e) {
+    return err(`Search failed: ${e instanceof Error ? e.message : String(e)}`);
+  }
 }
